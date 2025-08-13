@@ -34,7 +34,4 @@ vim.opt.guifont = "MesloLGS NF:h17"  -- You can adjust the size (h14) as needed
 
 -- Keymaps
 require("config.keymaps")
-
--- Lazy Plugins 
 require("config.lazy")
-require("lazy").setup("plugins")
