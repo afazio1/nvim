@@ -35,19 +35,34 @@ return {
       cmd = { "clangd", "--compile-commands-dir=build" },
       root_dir = require("lspconfig.util").root_pattern("compile_commands.json", ".git"),
     })
-    vim.lsp.enable("clangd")
 
     vim.lsp.config("gopls", {
       capabilities = capabilities,
       on_attach = lsp_keymaps,
     })
-    vim.lsp.enable("gopls")
 
     vim.lsp.config("pyright", {
       capabilities = capabilities,
       on_attach = lsp_keymaps,
     })
-    vim.lsp.enable("pyright")
+
+    vim.lsp.config("ts_ls", {
+      capabilities = capabilities,
+      on_attach = lsp_keymaps,
+    })
+
+    vim.lsp.config("jdtls", {
+      capabilities = capabilities,
+      on_attach = lsp_keymaps,
+    })
+
+    vim.lsp.enable({
+      "clangd",
+      "gopls",
+      "pyright",
+      "ts_ls",
+      "jdtls",
+    })
 
   end,
 }
