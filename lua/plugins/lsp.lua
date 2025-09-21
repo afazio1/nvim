@@ -11,35 +11,40 @@ return {
     )
 
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
-    local lsp_keymaps = function()
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
-      vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
-      vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {buffer = 0})
-      vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer = 0})
-      vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer = 0})
-      vim.keymap.set("n", "<leader>df", vim.diagnostic.goto_next, {buffer = 0})
-      vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, {buffer = 0})
-      vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<cr>", {buffer = 0})
-      vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {buffer = 0})
-      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {buffer = 0})
-      vim.keymap.set("n", "<leader>fr", require("telescope.builtin").lsp_references, {buffer = 0})
+    local lsp_keymaps = function(_, bufnr)
+      local opts = { buffer = bufnr }
+      vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+      vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+      vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
+      vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+      vim.keymap.set("n", "<leader>df", vim.diagnostic.goto_next, opts)
+      vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, opts)
+      vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<cr>", opts)
+      vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
+      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+      vim.keymap.set("n", "<leader>fr", require("telescope.builtin").lsp_references, opts)
       vim.keymap.set("n", "<leader>e", function()
         vim.diagnostic.open_float(nil, {focusable = false, scope = "line", max_width = 80, border = "single"})
-      end, {buffer = 0})
+      end, opts)
     end
-    require'lspconfig'.clangd.setup{
+    
+    vim.lsp.config("clangd", {
       capabilities = capabilities,
       on_attach = lsp_keymaps,
       cmd = { "clangd", "--compile-commands-dir=build" },
       root_dir = require("lspconfig.util").root_pattern("compile_commands.json", ".git"),
-    }
-    require'lspconfig'.gopls.setup{
+    })
+
+    vim.lsp.config("gopls", {
       capabilities = capabilities,
       on_attach = lsp_keymaps,
-    }
-    require'lspconfig'.pyright.setup{
+    })
+
+    vim.lsp.config("pyright", {
       capabilities = capabilities,
       on_attach = lsp_keymaps,
-    }
+    })
+
   end,
 }
